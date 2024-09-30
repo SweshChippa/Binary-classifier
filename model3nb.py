@@ -9,8 +9,8 @@ from sklearn.metrics import confusion_matrix, classification_report
 from sklearn.model_selection import train_test_split, GridSearchCV
 from sklearn.metrics import accuracy_score  # Import accuracy_score
 
-# import nltk
-# nltk.download('averaged_perceptron_tagger')
+import nltk
+nltk.download('averaged_perceptron_tagger')
 
 # Install necessary packages
 # !pip install nltk scikit-learn pandas
@@ -82,33 +82,25 @@ def train_and_evaluate(train_data, train_labels, test_data, test_labels):
     train_data = preprocess_data(train_data)
     test_data = preprocess_data(test_data)
     
-    # Hyperparameter tuning to get the best model
     best_model = tune_hyperparameters(train_data, train_labels)
-    
-    # Train on the best model
+
     best_model.fit(train_data, train_labels)
-    
-    # Predict on test data
+
     predictions = best_model.predict(test_data)
     
-    # Calculate accuracy
     accuracy = accuracy_score(test_labels, predictions)  # Calculate accuracy
     
-    # Confusion matrix and classification report
     cm = confusion_matrix(test_labels, predictions)
     report = classification_report(test_labels, predictions, target_names=['Negative', 'Positive'])
     
-    return cm, report, accuracy  # Return accuracy
+    return cm, report, accuracy  
 
 # Main execution
 if __name__ == "__main__":
-    # Load data
     pos_reviews, neg_reviews = load_data()
     
-    # Split data into training, validation, and test sets
     train_data, train_labels, valid_data, valid_labels, test_data, test_labels = split_data(pos_reviews, neg_reviews)
     
-    # Train and evaluate the model
     cm, report, accuracy = train_and_evaluate(train_data, train_labels, test_data, test_labels)
     
     # Print results
